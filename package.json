@@ -1,0 +1,18 @@
+{
+  "name": "mochanchai-framework",
+  "version": "1.0.0",
+  "description": "API Testing Framework with Mocha & Chai",
+  "main": "index.js",
+  "scripts": {
+    "test:alone": "mocha --timeout 10000",
+    "test": "mocha --timeout 40000 --reporter mochawesome || true && open mochawesome-report/mochawesome.html"
+  },
+  "author": "Anthony Hamm",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^8.2.1",
+    "mochawesome": "^6.2.1"
+  }
+}

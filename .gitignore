@@ -1,0 +1,21 @@
+# OS or Editor folders
+.DS_Store
+._*
+Thumbs.db
+.cache
+.project
+.settings
+.tmproj
+*.esproj
+*.iml
+.vscode
+.jshintrc
+
+# Directories to ignore
+node_modules/
+mochawesome-report/
+package-lock.json
+
+# Files and file types to ignore
+*.log
+.env
