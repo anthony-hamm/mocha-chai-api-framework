@@ -4,31 +4,32 @@ chai.use(chaiHttp);
 let { expect, should } = chai;
 
 let apiCall = chai.request('http://34.205.174.166/');
-let temp = new require('./data-sets/product-standard.js');
-product = temp.product;
-let temp1 = new require('./data-sets/coupon-standard.js');
-coupon = temp1.coupon;
-let temp2 = new require('./data-sets/order-standard.js');
-var order = temp2.order;
-
+let d = new Date();
+let timestamp = [d.getFullYear(), d.getMonth()+1, d.getDate(), 
+  d.getHours(), d.getMinutes(), Math.round(Math.random() * 10000)].join('');
+let coupon = { code: timestamp, amount: "10.00", };
+let product = { name: "Hamm Quality", regular_price: "100.00", };
+let order = { 
+    line_items: [{ product_id: 7903 }], 
+    coupon_lines: [{ code: 123, }]
+};
 
 describe('Orders - The Challenge', function() { 
 
     describe('Setup', function() {
 
-        it('create a new product' , function() {
+        it('create a new product' , (done) => {
             apiCall
             .post('/wp-json/wc/v3/products')
             .auth('shopmanager', 'axY2 rimc SzO9 cobf AZBw NLnX')
             .send(product)
             .end(function(err, res) {
-                if (err) done(err);
                 // stores product ID for later use
                 product.id = res.body.id;
                 // Response verification
                 // HTTP status should be 200
                 expect(res).to.have.status(201);
-                // done();
+                done();
             });
         });
 
@@ -38,7 +39,6 @@ describe('Orders - The Challenge', function() {
             .auth('shopmanager', 'axY2 rimc SzO9 cobf AZBw NLnX')
             .send(coupon)
             .end(function(err, res) {
-                if (err) done(err);
                 // stores coupon ID for later use
                 coupon.id = res.body.id;
                 // HTTP status should be 200
@@ -48,6 +48,8 @@ describe('Orders - The Challenge', function() {
         });
 
         it('create a new order with product and coupon output' , function(done) {
+            order.line_items[0].product_id = product.id;
+            order.coupon_lines[0].code = coupon.code;
             apiCall
             .post('/wp-json/wc/v3/orders')
             .auth('shopmanager', 'axY2 rimc SzO9 cobf AZBw NLnX')
@@ -136,7 +138,7 @@ describe('Orders - The Challenge', function() {
                 // coupon name should match the one provided
                 expect(_body.discount_total).to.equal(coupon.amount);
                 // roduct price should match the one provided
-                expect(_body.line_items.product_id).to.equal(product.id);
+                expect(_body.line_items[0].product_id).to.equal(product.id);
                 done();
             });
         });

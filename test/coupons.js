@@ -4,11 +4,11 @@ chai.use(chaiHttp);
 const { expect, should } = chai;
 
 const apiCall = chai.request('http://34.205.174.166/');
-let temp1 = require('./data-sets/coupon-standard.js');
-coupon = temp1.coupon;
-let temp = require('./data-sets/coupon-modified');
-couponModified = temp.couponModified;
-
+let d = new Date();
+let timestamp = [d.getFullYear(), d.getMonth()+1, d.getDate(), 
+  d.getHours(), d.getMinutes(), Math.round(Math.random() * 10000)].join('');
+let coupon = { code: timestamp,  amount: "10.00", };
+let couponModified = { "code": timestamp+1, "amount": "5.00", };
 
  // CRUD tests for Coupons
 describe('Coupons CRUD', function() {

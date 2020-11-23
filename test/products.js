@@ -4,8 +4,13 @@ chai.use(chaiHttp);
 
 let { expect, should } = chai;
 let apiCall = chai.request('http://34.205.174.166/');
-let temp = require('./data-sets/product-standard.js');
-product = temp.product;
+// let temp = require('./data-sets/product-standard.js');
+// product = temp.product;
+
+let product = {
+    name: "Hamm Quality",
+    regular_price: "100.00",
+};
 
 describe('Products CRUD', function() { 
 
@@ -16,7 +21,6 @@ describe('Products CRUD', function() {
             .auth('shopmanager', 'axY2 rimc SzO9 cobf AZBw NLnX')
             .send(product)
             .end(function(err, res) {
-                if (err) done(err);
                 // focus on response body
                 _body = res.body;
                 // stores product ID for later use
