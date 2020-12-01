@@ -61,9 +61,7 @@ describe('Orders - The Challenge', function() {
                 expect(res).to.have.status(201);
             done();
             });
-        });
-
-        
+        });     
     });
 
     describe('Integration Tests', function() {
@@ -87,6 +85,21 @@ describe('Orders - The Challenge', function() {
                 expect(_body.name).to.equal(product.name);
                 // roduct price should match the one provided
                 expect(_body.price).to.equal(product.regular_price);
+                done();
+            });
+        });
+
+        it('user should not be able to retrieve a product that doesn`t exist' , function(done) {
+            apiCall
+            .get('wp-json/wc/v3/products/999999')
+            .auth('shopmanager', 'axY2 rimc SzO9 cobf AZBw NLnX')
+            .end(function(err, res) {
+                if (err) done(err);
+                // focus on response body
+                _body = res.body;
+                // Response verification
+                // HTTP status should be 404
+                expect(res).to.have.status(404);
                 done();
             });
         });
@@ -117,6 +130,21 @@ describe('Orders - The Challenge', function() {
             });
         });
 
+        it('user should not be able to retrieve a coupon that doen´s exist' , function(done) {
+            apiCall
+            .get('wp-json/wc/v3/coupons/9999')
+            .auth('shopmanager', 'axY2 rimc SzO9 cobf AZBw NLnX')
+            .end(function(err, res) {
+                if (err) done(err);
+                // focus on response body
+                _body = res.body;
+                // Response verification
+                // HTTP status should be 404
+                expect(res).to.have.status(404);
+                done();
+            });
+        });
+
         it('user should be able to retrieve the already created order' , function(done) {
             apiCall
             .get('/wp-json/wc/v3/orders/' +order.id)
@@ -139,6 +167,21 @@ describe('Orders - The Challenge', function() {
                 expect(_body.discount_total).to.equal(coupon.amount);
                 // roduct price should match the one provided
                 expect(_body.line_items[0].product_id).to.equal(product.id);
+                done();
+            });
+        });
+
+        it('user should not be able to retrieve an order that doesn´t exist' , function(done) {
+            apiCall
+            .get('/wp-json/wc/v3/orders/9999')
+            .auth('shopmanager', 'axY2 rimc SzO9 cobf AZBw NLnX')
+            .end(function(err, res) {
+                if (err) done(err);
+                // focus on response body
+                _body = res.body;
+                // Response verification
+                // HTTP status should be 404
+                expect(res).to.have.status(404);
                 done();
             });
         });
@@ -198,8 +241,6 @@ describe('Orders - The Challenge', function() {
                 done();
             });
         });
-
-
     });
 
 });

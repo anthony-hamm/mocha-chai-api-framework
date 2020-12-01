@@ -4,7 +4,7 @@
   "description": "API Testing Framework with Mocha & Chai",
   "main": "index.js",
   "scripts": {
-    "test:alone": "mocha --timeout 10000",
+    "test:alone": "mocha --timeout 400000",
     "test": "mocha --timeout 400000 --reporter mochawesome || true && open mochawesome-report/mochawesome.html"
   },
   "author": "Anthony Hamm",
